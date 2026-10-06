@@ -44,7 +44,7 @@ Every action runs exclusively: buttons are disabled while one is in flight, beca
 ## How to run it
 
 1. `git clone https://github.com/rajatslakhina/change-feed-spine-kit-demo-app.git`
-2. Open `Demo.xcodeproj` in Xcode 16 or later. Xcode resolves `change-feed-spine-kit` from GitHub.
+2. Open `Demo.xcodeproj` in Xcode 16 or later. Xcode resolves `change-feed-spine-kit` from GitHub (any `1.x` release from `1.0.0`).
 3. Select the **Demo** scheme and any iOS 17+ Simulator.
 4. Build & Run (⌘R).
 
@@ -54,7 +54,12 @@ Every action runs exclusively: buttons are disabled while one is in flight, beca
 
 ## Verification
 
-(Filled in from real CI results after the push.)
+Two separate facts, stated separately:
+
+- **It builds for the iOS Simulator — verified in CI.** The [Actions](https://github.com/rajatslakhina/change-feed-spine-kit-demo-app/actions) job runs on `macos-15` with Xcode 16.4. It runs `xcodebuild -resolvePackageDependencies`, prints the resulting `Package.resolved` (which, at the time of writing, pins `change-feed-spine-kit` at `1.0.0`, resolved from GitHub), and then runs `xcodebuild build -scheme Demo -destination 'generic/platform=iOS Simulator'`. That proves two things: the remote package reference resolves, and the app compiles against the published library. It does not prove the app launches, or that it behaves as described above.
+- **It has not been run on a Simulator.** No one has launched this app on a Simulator or a device. The build ran unattended. Access to the Mac's Xcode and Simulator was available, but Xcode had another, unrelated project open, so the run was not attempted, to avoid interfering with that work. Everything under *What's on screen* and *Things to try* comes from tracing the code (`ConsoleModel`, `ChangeFeedConsole`) by hand, plus the library's 52 passing tests. None of it has been observed on screen. **No screenshots exist.**
+
+The library's own verification (local build and tests, Linux + macOS CI, mutation checks) is described in its [README](https://github.com/rajatslakhina/change-feed-spine-kit#verification).
 
 ## License
 
